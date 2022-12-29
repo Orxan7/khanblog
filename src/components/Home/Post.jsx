@@ -4,8 +4,9 @@ import CardOverflow from "@mui/joy/CardOverflow";
 import Divider from "@mui/joy/Divider";
 import Typography from "@mui/joy/Typography";
 import moment from "moment";
+import PostMenu from "./PostMenu";
 
-export default function Post({ username, text, created }) {
+export default function Post({ username, text, created, post_id }) {
 
   return (
     <Card variant="outlined" sx={{ margin: "30px 20%" }}>
@@ -20,6 +21,7 @@ export default function Post({ username, text, created }) {
         variant="soft"
         sx={{
           display: "flex",
+          justifyContent: "space-between",
           gap: 1.5,
           py: 1.5,
           px: "var(--Card-padding)",
@@ -28,10 +30,11 @@ export default function Post({ username, text, created }) {
       >
         <Typography
           level="body3"
-          sx={{ fontWeight: "md", color: "text.secondary" }}
+          sx={{ fontWeight: "md", color: "text.secondary", marginTop: "4px" }}
         >
           {moment(created).fromNow(true)}
         </Typography>
+        <PostMenu id={post_id} />
       </CardOverflow>
     </Card>
   );

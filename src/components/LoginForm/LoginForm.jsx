@@ -3,9 +3,10 @@ import Box from "@mui/material/Box";
 import "./loginForm.css"
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Cookies from "universal-cookie";
-
+import { useDispatch } from 'react-redux'
+import { authTrue } from "../../redux/actions";
 
 
 export default function LoginForm(){
@@ -15,6 +16,9 @@ export default function LoginForm(){
     const [message, setMessage] = useState("");
 
     const cookies = new Cookies();
+    
+    const dispatch = useDispatch()
+
     
     const loginSubmit = (event)=>{
         event.preventDefault();
@@ -26,7 +30,7 @@ export default function LoginForm(){
                     cookies.set("TOKEN", data.token, {
                         path: "/",
                       });
-                    window.location.href = "/";
+                    dispatch(authTrue())
                 }
                 else{
                     setMessage(data.error)
@@ -43,10 +47,6 @@ export default function LoginForm(){
                 password: password,
             })
     };
-
-    useEffect(()=>{
-
-    },[message])
 
     return (
         <Box

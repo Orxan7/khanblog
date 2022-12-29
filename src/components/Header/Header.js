@@ -12,16 +12,22 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import Cookies from "universal-cookie";
+import { useSelector, useDispatch } from 'react-redux'
+import { authFalse } from "../../redux/actions";
+import { CircularProgress } from '@mui/joy';
+import { Link } from 'react-router-dom';
 
 
+const login_pages = []
 const pages = ['Products', 'Pricing', 'Blog'];
 const settings = ['Profile', 'Logout'];
 
 function ResponsiveAppBar() {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
-
-    const cookies = new Cookies();
+    
+    const auth = useSelector((state) => state.auth)
+    const dispatch = useDispatch()
     
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
@@ -41,10 +47,12 @@ function ResponsiveAppBar() {
 
     const handleClick = (event)=>{
         const menu = event.target.textContent;
+        const cookies = new Cookies();
         
         switch(menu){
             case "Logout":
                 cookies.remove('TOKEN')
+                dispatch(authFalse())
                 break
             default:
                 break
@@ -53,7 +61,7 @@ function ResponsiveAppBar() {
     }
 
     return (
-        <AppBar position="static">
+        <AppBar position="static" >
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
                     <Typography
@@ -129,7 +137,7 @@ function ResponsiveAppBar() {
                         KhanBlog
                     </Typography>
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-                        {pages.map((page) => (
+                        {(auth ? pages : login_pages).map((page) => (
                             <Button
                                 key={page}
                                 onClick={handleCloseNavMenu}
@@ -139,8 +147,30 @@ function ResponsiveAppBar() {
                             </Button>
                         ))}
                     </Box>
-
-                    <Box sx={{ flexGrow: 0 }}>
+                    {auth===null?(
+                        <Box sx={{ flexGrow: 0, display: { xs: 'none', md: 'flex' } }}>
+                            <CircularProgress />
+                       </Box>
+                    ):!auth?(
+                        <Box sx={{ flexGrow: 0, display: { xs: 'none', md: 'flex' } }}>
+                            <Button
+                                key='Sign In'
+                                onClick={handleCloseNavMenu}
+                                sx={{ my: 2, color: 'white', display: 'block' }}
+                            >
+                                 <Link to="login" style={{color: 'inherit', textDecoration:'none'}}>Sign In</Link>  
+                            </Button>
+                            <Button
+                                key='Sign Up'
+                                onClick={handleCloseNavMenu}
+                                sx={{ my: 2, color: 'white', display: 'block' }}
+                            >
+                                <Link to="register" style={{color: 'inherit', textDecoration:'none'}}>Sign Up</Link>  
+                            </Button>
+                    </Box>
+                    ):
+                    (
+                        <Box sx={{ flexGrow: 0 }}>
                         <Tooltip title="Open settings">
                             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                                 <Avatar alt="Remy Sharp" src="https://127.0.0.1:3000/static/images/avatar/2.jpg" />
@@ -168,7 +198,9 @@ function ResponsiveAppBar() {
                                 </MenuItem>
                             ))}
                         </Menu>
-                    </Box>
+                    </Box>    
+                    )
+                    }
                 </Toolbar>
             </Container>
         </AppBar>

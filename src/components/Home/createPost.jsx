@@ -4,27 +4,53 @@ import Button from '@mui/joy/Button';
 import Textarea from '@mui/joy/Textarea';
 import { CssVarsProvider } from "@mui/joy/styles";
 import { Typography } from '@mui/material';
+import { addPost } from '../../redux/actions';
+import { useDispatch } from 'react-redux';
 
 export default function CreatePost() {
     
   const [value, setValue] = React.useState("");
   const [message, setMessage] = React.useState("")
 
+  const dispatch = useDispatch()
+
   const handleSubmit = (e)=>{
     e.preventDefault();
 
     const requestOptions = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify({
               text: value,
           })
   };
 
     fetch('/post/', requestOptions)
-      .then((res)=>res.json())
-      .then(data=>{
-        setMessage(data.message)
+      .then(async (res)=>({
+        data: await res.json(),
+        status: res.ok
+      }))
+      .then((data)=>{
+        console.log(data)
+        if(data.status){
+          dispatch(addPost({
+            username: data.data.username,
+            createdAt: data.data.created,
+            post_id: data.data.post_id,
+            text: data.data.text
+          }))
+          setValue("")
+          setMessage(data.data.status)
+        }
+        else
+        {
+          setMessage(data.data.message)
+        }
+      })
+      .catch(error=>{
+        console.log(error)
       })
   } 
 
@@ -50,7 +76,7 @@ export default function CreatePost() {
                 <Typography level="body1" color={message.includes('3')?"red":"green"} marginTop="4px">
                   {message} 
                 </Typography>
-                <Button sx={{ ml: 'auto', }} type="submit">Send</Button>
+                <Button sx={{ ml: 'auto', }} type="submit">Publish</Button>
             </Box>
             }
             sx={{
