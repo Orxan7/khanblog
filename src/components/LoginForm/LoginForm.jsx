@@ -29,8 +29,9 @@ export default function LoginForm(){
                     setMessage("You Are Logged in Successfully.")
                     cookies.set("TOKEN", data.token, {
                         path: "/",
+                        maxAge: 24*60*60
                       });
-                    dispatch(authTrue())
+                    dispatch(authTrue(data.id))
                 }
                 else{
                     setMessage(data.error)

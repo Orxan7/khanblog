@@ -1,6 +1,9 @@
-export function authTrue() {
+export function authTrue(id) {
     return {
       type: 'AUTH_TRUE',
+      payload: {
+        id: id
+      }
     }
   }
   

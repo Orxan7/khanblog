@@ -11,7 +11,6 @@ export default function HomePage(){
 
     const posts = useSelector((state) => state.posts)
 
-
     useEffect(()=>{
 
         const requestOptions = {

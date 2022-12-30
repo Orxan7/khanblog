@@ -7,9 +7,12 @@ export default function reducer(state=initialState, action) {
     
     switch(action.type) {
         case 'AUTH_TRUE':
+            const id = action.payload.id; 
             return {
                 ...state,
-                auth: true
+                auth: {
+                    id: id,
+                }
             }
         case 'AUTH_FALSE':
             return {

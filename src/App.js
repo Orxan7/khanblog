@@ -15,10 +15,7 @@ function App() {
   const auth = useSelector((state) => state.auth)
   const dispatch = useDispatch()
 
-  useEffect(()=>{
-    const cookies = new Cookies();
-    const token = cookies.get("TOKEN");
-  
+  useEffect(()=>{  
     const configuration = {
       method: "GET",
     };
@@ -30,7 +27,7 @@ function App() {
         dispatch(authFalse())
       }
       else {
-        dispatch(authTrue())
+        dispatch(authTrue(data.user_id))
       }
     })
     .catch(err=>{
@@ -47,7 +44,7 @@ function App() {
           <Routes>
             
             {auth===null?<Route path="*" element={<Loading />}/>
-            :auth===true?
+            :auth?
             (<>
             <Route path="/" element={<HomePage />}/>
             <Route path="login" element={<Navigate to="/" />} />

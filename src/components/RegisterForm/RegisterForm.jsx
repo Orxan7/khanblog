@@ -4,6 +4,9 @@ import "./registerForm.css"
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import {useState} from "react";
+import { useDispatch } from "react-redux";
+import { authTrue } from "../../redux/actions";
+import Cookies from "universal-cookie";
 
 
 export default function RegisterForm(){
@@ -13,13 +16,25 @@ export default function RegisterForm(){
     const [password, setPassword] = useState("");
     const [passwordnd, setPasswordnd] = useState("");
     const [error, setError] = useState("");
+    
+    const cookies = new Cookies();
+
+    const dispatch = useDispatch()
 
     const onsubmit = (e)=>{
         e.preventDefault();
         fetch('/auth/register',requestOptions)
             .then(res=>res.json())
             .then(data=>{
-                if(data.error)setError(data.error)
+                if(data.error){setError(data.error)}
+                else{
+                    cookies.set("TOKEN", data.token, {
+                        path: "/",
+                        maxAge: 24*60*60
+                      });
+                    dispatch(authTrue(data.id))
+                }
+
             })
             .catch(err=>{console.log(err)})
     }

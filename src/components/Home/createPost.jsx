@@ -33,7 +33,6 @@ export default function CreatePost() {
         status: res.ok
       }))
       .then((data)=>{
-        console.log(data)
         if(data.status){
           dispatch(addPost({
             username: data.data.username,

@@ -39,8 +39,10 @@ export default function PostMenu({ id }) {
             
     fetch('/post/',requestOptions)
       .then(res=>res.json())
-      .then(()=>{
-        dispatch(deletePost(id))
+      .then((data)=>{
+        if(data.message){
+          dispatch(deletePost(id))
+        }
       })
       .catch(err=>console.log(err))
     };
