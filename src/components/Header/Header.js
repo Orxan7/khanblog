@@ -20,13 +20,13 @@ import { Link } from 'react-router-dom';
 
 const login_pages = []
 const pages = ['Products', 'Pricing', 'Blog'];
-const settings = ['Profile', 'Logout'];
 
 function ResponsiveAppBar() {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
     
     const auth = useSelector((state) => state.auth)
+
     const dispatch = useDispatch()
     
     const handleOpenNavMenu = (event) => {
@@ -173,7 +173,7 @@ function ResponsiveAppBar() {
                         <Box sx={{ flexGrow: 0 }}>
                         <Tooltip title="Open settings">
                             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                <Avatar alt="Remy Sharp" src="https://127.0.0.1:3000/static/images/avatar/2.jpg" />
+                                <Avatar alt={(auth.username).toUpperCase()} src="https://127.0.0.1:3000/static/images/avatar/2.jpg" />
                             </IconButton>
                         </Tooltip>
                         <Menu
@@ -192,11 +192,12 @@ function ResponsiveAppBar() {
                             open={Boolean(anchorElUser)}
                             onClose={handleCloseUserMenu}
                         >
-                            {settings.map((setting) => (
-                                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                                    <Typography textAlign="center" onClick={handleClick}>{setting}</Typography>
-                                </MenuItem>
-                            ))}
+                            <MenuItem key='Profile' onClick={handleCloseUserMenu}>
+                                <Typography textAlign="center" onClick={handleClick}><Link to={`/user/${auth.id}/`} style={{textDecoration: "none", color: "inherit"}}>Profile</Link></Typography>
+                            </MenuItem>
+                            <MenuItem key='Logout' onClick={handleCloseUserMenu}>
+                                <Typography textAlign="center" onClick={handleClick}>Logout</Typography>
+                            </MenuItem>
                         </Menu>
                     </Box>    
                     )

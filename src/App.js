@@ -3,12 +3,12 @@ import LoginPage from "./pages/auth/LoginPage";
 import ResponsiveAppBar from "./components/Header/Header";
 import RegisterPage from "./pages/auth/RegisterPage";
 import HomePage from "./pages/HomePage";
-import Cookies from "universal-cookie";
 import { useEffect } from "react";
 import Loading from "./components/Loading/Loading";
 import { useSelector, useDispatch } from 'react-redux'
 import { authTrue, authFalse } from "./redux/actions";
 import ProfilePage from "./pages/ProfilePage";
+import PageNotFound from "./pages/PageNotFound";
 
 function App() {
 
@@ -27,7 +27,7 @@ function App() {
         dispatch(authFalse())
       }
       else {
-        dispatch(authTrue(data.user_id))
+        dispatch(authTrue(data.user.id, data.user.username))
       }
     })
     .catch(err=>{
@@ -50,6 +50,7 @@ function App() {
             <Route path="login" element={<Navigate to="/" />} />
             <Route path="register" element={<Navigate to="/" />}/>
             <Route path="user/:id" element={<ProfilePage />} />
+            <Route path="*" element={<PageNotFound />} />
             </>
             ):
             (

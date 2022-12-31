@@ -1,9 +1,13 @@
+import md5Hex from "md5-hex"
 import "./Avatar.css"
 
-export default function Avatar(){
+export default function Avatar({ username }){
+
+    const md5hex = md5Hex(username);
+
     return (
         <div style={{ display: "flex", }}>
-            <img className="profile__image" alt="avatar" src="https://images.unsplash.com/photo-1527549993586-dff825b37782?auto=format&fit=crop&w=286" />
+            <img className="profile__image" alt="avatar" src={`https://www.gravatar.com/avatar/${md5hex}?d=monsterid&s=286`} />
         </div>
     )
 }

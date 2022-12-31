@@ -27,7 +27,7 @@ export default function CreatePost() {
           })
   };
 
-    fetch('/post/', requestOptions)
+    fetch('/api/post/', requestOptions)
       .then(async (res)=>({
         data: await res.json(),
         status: res.ok
@@ -38,7 +38,8 @@ export default function CreatePost() {
             username: data.data.username,
             createdAt: data.data.created,
             post_id: data.data.post_id,
-            text: data.data.text
+            text: data.data.text,
+            user_id: data.data.user_id
           }))
           setValue("")
           setMessage(data.data.status)

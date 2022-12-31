@@ -32,7 +32,7 @@ export default function RegisterForm(){
                         path: "/",
                         maxAge: 24*60*60
                       });
-                    dispatch(authTrue(data.id))
+                    dispatch(authTrue(data.id, data.username))
                 }
 
             })

@@ -1,5 +1,5 @@
 import Post from "../components/Home/Post";
-import CreatePost from "../components/Home/createPost";
+import CreatePost from "../components/Home/CreatePost";
 import { useEffect } from "react";
 import { addPosts } from "../redux/actions";
 import { useDispatch, useSelector } from "react-redux";
@@ -20,7 +20,7 @@ export default function HomePage(){
             },
         };
 
-        fetch('/posts/', requestOptions)
+        fetch('/api/posts/', requestOptions)
             .then((res)=>res.json())
             .then(data=>{
                 dispatch(addPosts(data))

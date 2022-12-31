@@ -4,12 +4,14 @@ import MenuItem from '@mui/joy/MenuItem';
 import ListItemDecorator from '@mui/joy/ListItemDecorator';
 import ListDivider from '@mui/joy/ListDivider';
 import Edit from '@mui/icons-material/Edit';
+import LinkIcon from '@mui/icons-material/Link';
+import ReportIcon from '@mui/icons-material/Report';
 import DeleteForever from '@mui/icons-material/DeleteForever';
 import { MoreHoriz } from '@mui/icons-material';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { deletePost } from '../../redux/actions';
 
-export default function PostMenu({ id }) {
+export default function PostMenu({ id , user_id }) {
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -23,6 +25,7 @@ export default function PostMenu({ id }) {
   };
 
   const dispatch = useDispatch()
+  const auth = useSelector((state) => state.auth)
 
   const handleDelete = () =>{
     setAnchorEl(null);
@@ -37,7 +40,7 @@ export default function PostMenu({ id }) {
         })
     };
             
-    fetch('/post/',requestOptions)
+    fetch('/api/post/',requestOptions)
       .then(res=>res.json())
       .then((data)=>{
         if(data.message){
@@ -58,6 +61,8 @@ export default function PostMenu({ id }) {
         aria-labelledby="positioned-demo-button"
         placement="bottom-end"
       >
+        {auth.id===user_id? (
+        <>
         <MenuItem onClick={handleClose}>
           <ListItemDecorator>
             <Edit />
@@ -71,7 +76,26 @@ export default function PostMenu({ id }) {
           </ListItemDecorator>{' '}
           Delete
         </MenuItem>
+        </>):
+        (
+          <>
+          <MenuItem onClick={handleClose} variant="soft" color="danger">
+            <ListItemDecorator>
+            <ReportIcon />
+            </ListItemDecorator>{' '}
+            Report
+          </MenuItem>
+          <ListDivider />
+          <MenuItem onClick={handleClose} >
+            <ListItemDecorator sx={{ color: 'inherit' }}>
+              <LinkIcon />
+            </ListItemDecorator>{' '}
+            Copy link
+          </MenuItem>
+          </>)
+      }
       </Menu>
+      
     </div>
   );
 }

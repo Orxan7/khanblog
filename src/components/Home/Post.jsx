@@ -6,7 +6,7 @@ import Typography from "@mui/joy/Typography";
 import moment from "moment";
 import PostMenu from "./PostMenu";
 
-export default function Post({ username, text, created, post_id }) {
+export default function Post({ username, text, created, post_id, user_id }) {
 
   return (
     <Card variant="outlined" sx={{ margin: "30px 20%" }}>
@@ -34,7 +34,7 @@ export default function Post({ username, text, created, post_id }) {
         >
           {moment(created).fromNow(true)}
         </Typography>
-        <PostMenu id={post_id} />
+        <PostMenu id={post_id} user_id={user_id} />
       </CardOverflow>
     </Card>
   );

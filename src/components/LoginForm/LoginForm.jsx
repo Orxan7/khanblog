@@ -31,7 +31,7 @@ export default function LoginForm(){
                         path: "/",
                         maxAge: 24*60*60
                       });
-                    dispatch(authTrue(data.id))
+                    dispatch(authTrue(data.id, data.username))
                 }
                 else{
                     setMessage(data.error)
